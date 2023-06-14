@@ -12,6 +12,8 @@ interface InertiaFormProps<TForm extends Record<string, unknown>> {
   wasSuccessful: boolean
   recentlySuccessful: boolean
   data(): TForm
+  setData(field: keyof TForm, value: string): this
+  setData(errors: Record<keyof TForm, string>): this
   transform(callback: (data: TForm) => object): this
   defaults(): this
   defaults(field: keyof TForm, value: string): this
@@ -64,6 +66,9 @@ export default function useForm<TForm extends Record<string, unknown>>(
         carry[key] = this[key]
         return carry
       }, {} as Partial<TForm>) as TForm
+    },
+    setData(fieldOrFields: keyof TForm | Record<keyof TForm, string>, maybeValue?: string) {
+      return this
     },
     transform(callback) {
       transform = callback
